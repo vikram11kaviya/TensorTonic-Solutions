@@ -10,25 +10,17 @@ def train_logistic_regression(X, y, lr=0.1, steps=1000):
     Return (w, b).
     """
     # Write code here
-    n = X.shape[1]
-    W = np.zeros((1,n))
-    y = y.reshape(-1,1)
-    b= 0.0
-    m = X.shape[0]
+    x=np.array(X)
+    y=np.array(y).reshape(-1,1)
+    w=np.zeros((x.shape[-1],1))
+    b=0.0
+    # print(w,b)
 
     for _ in range(steps):
-        z= np.matmul(X,W.T)+b
-        # print("h")
-        y_hat = _sigmoid(z)
-        delta = y_hat-y
-        grad_W = np.matmul((y_hat-y).T,X)
-        grad_b = np.sum((y_hat-y)).item()
-        W = W - (lr/m)*grad_W
-        b = b - (lr/m)*grad_b
-    print(W)
+        y_hat = _sigmoid(np.matmul(x,w)+b)
+        del_l = y_hat-y
+        w = w-lr*np.matmul(x.T,del_l)
+        b = b-lr*np.sum(del_l)
+    print(w)
     print(b)
-    print("here")
-    print(np.matmul(X,W.T)+b)
-    return W.flatten(), b
-        
-        
+    return w.reshape(-1),b
